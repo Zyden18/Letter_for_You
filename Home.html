@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff6f0">
+  <title>A little date question ♡</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #49353c;
+      --muted: #907a82;
+      --berry: #bd526e;
+      --berry-dark: #9c3d58;
+      --blush: #fce4e7;
+      --cream: #fffaf4;
+      --line: #f1dadd;
+      --green: #547964;
+      --shadow: 0 24px 70px rgba(117, 67, 78, .13);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      padding: 36px 18px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 13% 14%, rgba(255, 220, 226, .8), transparent 32%),
+        radial-gradient(ellipse at 88% 82%, rgba(255, 229, 196, .64), transparent 34%),
+        #fff6f0;
+      font-family: "Segoe UI", "Trebuchet MS", system-ui, sans-serif;
+    }
+
+    button, input, textarea { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 3px solid #d78698;
+      outline-offset: 3px;
+    }
+
+    .page { width: min(100%, 760px); position: relative; }
+    .sparkle {
+      position: absolute;
+      z-index: 0;
+      color: #d994a2;
+      opacity: .7;
+      font-size: 25px;
+      animation: float 4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .sparkle.one { top: 6%; left: -22px; }
+    .sparkle.two { top: 28%; right: -18px; animation-delay: -1.7s; font-size: 19px; }
+    .sparkle.three { bottom: 6%; left: 4%; animation-delay: -2.5s; font-size: 17px; }
+    @keyframes float { 50% { transform: translateY(-9px) rotate(12deg); } }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 30px;
+      background: rgba(255, 253, 250, .94);
+      box-shadow: var(--shadow);
+    }
+    .top-wash {
+      height: 12px;
+      background: linear-gradient(90deg, #e9a0a9, #f3c8a1, #e9a0a9);
+    }
+    .content { padding: clamp(25px, 6vw, 54px); }
+    .hero { text-align: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border: 1px solid #f5d9dc;
+      border-radius: 99px;
+      background: #fff3f2;
+      color: var(--berry-dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .hero-icon { margin: 17px 0 5px; font-size: 50px; line-height: 1; }
+    h1 {
+      margin: 10px 0 13px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(35px, 7vw, 54px);
+      font-weight: 500;
+      letter-spacing: -.045em;
+      line-height: 1.07;
+    }
+    h1 span { color: var(--berry); font-style: italic; }
+    .intro { max-width: 480px; margin: 0 auto; color: var(--muted); font-size: 16px; line-height: 1.7; }
+    .divider { display: flex; align-items: center; gap: 13px; margin: 29px 0; color: #d79aa5; }
+    .divider::before, .divider::after { height: 1px; flex: 1; content: ""; background: var(--line); }
+
+    .question { margin: 0 0 14px; text-align: center; font-family: Georgia, serif; font-size: 23px; font-weight: 500; }
+    .answer-row { min-height: 54px; display: flex; justify-content: center; align-items: center; gap: 12px; }
+    .btn {
+      min-height: 48px;
+      padding: 12px 23px;
+      border: 0;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { color: white; background: var(--berry); box-shadow: 0 7px 17px rgba(189,82,110,.22); }
+    .btn-primary:hover { background: var(--berry-dark); box-shadow: 0 9px 21px rgba(189,82,110,.28); }
+    .btn-soft { color: var(--berry-dark); border: 1px solid #f0d1d7; background: #fff5f4; }
+    .btn-soft:hover { background: #ffebed; }
+    .no-note { min-height: 23px; margin: 9px 0 0; color: var(--muted); text-align: center; font-size: 13px; }
+
+    .planner { display: none; margin-top: 27px; padding-top: 27px; border-top: 1px solid var(--line); animation: arrive .45s ease both; }
+    .planner.show { display: block; }
+    @keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .planner-heading { margin: 0 0 5px; text-align: center; font-family: Georgia, serif; font-size: 25px; font-weight: 500; }
+    .planner-sub { margin: 0 0 20px; color: var(--muted); text-align: center; font-size: 14px; }
+    .field-label { display: block; margin: 18px 0 9px; font-size: 14px; font-weight: 700; }
+    .ideas { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+    .idea {
+      position: relative;
+      min-height: 82px;
+      padding: 13px 8px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      color: var(--ink);
+      background: #fffdfa;
+      text-align: center;
+      transition: border .18s, background .18s, transform .18s;
+    }
+    .idea:hover { transform: translateY(-2px); border-color: #e5a8b4; }
+    .idea[aria-pressed="true"] { border: 2px solid #d98698; background: #fff0f1; }
+    .idea .emoji { display: block; margin-bottom: 6px; font-size: 23px; }
+    .idea .label { display: block; font-size: 12px; font-weight: 650; line-height: 1.25; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+    input, textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 11px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink);
+      background: #fffdfa;
+    }
+    input::placeholder, textarea::placeholder { color: #b3a1a6; }
+    textarea { min-height: 82px; resize: vertical; }
+    .submit-row { display: flex; justify-content: center; margin-top: 19px; }
+    .result {
+      display: none;
+      margin-top: 20px;
+      padding: 18px;
+      border: 1px solid #dce9df;
+      border-radius: 16px;
+      color: #355543;
+      background: #f3faf4;
+      text-align: center;
+      line-height: 1.6;
+      animation: arrive .35s ease both;
+    }
+    .result.show { display: block; }
+    .result strong { display: block; margin-bottom: 5px; font-family: Georgia, serif; font-size: 21px; }
+    .result p { margin: 0; }
+    .copy-btn { margin-top: 12px; padding: 8px 14px; border: 1px solid #c9ddce; border-radius: 99px; color: #355543; background: white; font-size: 13px; font-weight: 700; }
+    .copy-btn:hover { background: #e9f5ec; }
+    .footer { margin-top: 24px; color: #a38d93; text-align: center; font-size: 12px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    .hearts { position: fixed; z-index: 5; inset: 0; overflow: hidden; pointer-events: none; }
+    .heart { position: absolute; bottom: -30px; animation: rise 2.2s ease-out forwards; }
+    @keyframes rise { to { transform: translateY(-110vh) rotate(24deg); opacity: 0; } }
+
+    @media (max-width: 520px) {
+      body { padding: 18px 12px; }
+      .card { border-radius: 23px; }
+      .content { padding: 27px 21px; }
+      .ideas { grid-template-columns: repeat(2, 1fr); }
+      .idea { min-height: 75px; }
+      .sparkle.one { left: -5px; top: 1%; }
+      .sparkle.two { right: -4px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+  <main class="page">
+    <span class="sparkle one" aria-hidden="true">✦</span>
+    <span class="sparkle two" aria-hidden="true">♡</span>
+    <span class="sparkle three" aria-hidden="true">✧</span>
+    <article class="card">
+      <div class="top-wash" aria-hidden="true"></div>
+      <div class="content">
+        <header class="hero">
+          <div class="eyebrow"><span aria-hidden="true">✿</span> a tiny question for you</div>
+          <div class="hero-icon" aria-hidden="true">💌</div>
+          <h1>Would you go on<br>a <span>date</span> with me?</h1>
+          <p class="intro">I’d really love to spend some time with you. Nothing fancy has to be planned — just a little time together. ♡</p>
+        </header>
+
+        <div class="divider" aria-hidden="true">♥</div>
+        <section aria-labelledby="answer-title">
+          <h2 class="question" id="answer-title">So… what do you say?</h2>
+          <div class="answer-row">
+            <button class="btn btn-primary" id="yes-button" type="button">Yes, I’d love to! ♡</button>
+            <button class="btn btn-soft" id="no-button" type="button">Maybe another time</button>
+          </div>
+          <p class="no-note" id="no-note" aria-live="polite"></p>
+        </section>
+
+        <section class="planner" id="planner" aria-labelledby="planner-title">
+          <h2 class="planner-heading" id="planner-title">Yay! Let’s make it your kind of date ✨</h2>
+          <p class="planner-sub">Pick as many as you like — and feel free to add your own idea.</p>
+          <span class="field-label" id="ideas-label">What sounds fun?</span>
+          <div class="ideas" role="group" aria-labelledby="ideas-label">
+            <button class="idea" type="button" aria-pressed="false" data-idea="Coffee or a cute café"><span class="emoji" aria-hidden="true">☕</span><span class="label">Coffee & a cute café</span></button>
+            <button class="idea" type="button" aria-pressed="false" data-idea="Dinner somewhere yummy"><span class="emoji" aria-hidden="true">🍝</span><span class="label">Dinner somewhere yummy</span></button>
+            <button class="idea" type="button" aria-pressed="false" data-idea="A movie night"><span class="emoji" aria-hidden="true">🎬</span><span class="label">A movie night</span></button>
+            <button class="idea" type="button" aria-pressed="false" data-idea="A little outdoor adventure"><span class="emoji" aria-hidden="true">🌷</span><span class="label">A little adventure</span></button>
+            <button class="idea" type="button" aria-pressed="false" data-idea="Dessert and a sweet treat"><span class="emoji" aria-hidden="true">🍰</span><span class="label">Dessert & sweet treats</span></button>
+            <button class="idea" type="button" aria-pressed="false" data-idea="A surprise date"><span class="emoji" aria-hidden="true">🎁</span><span class="label">Surprise me!</span></button>
+          </div>
+          <label class="field-label" for="custom-idea">Or tell me your own idea</label>
+          <input id="custom-idea" type="text" maxlength="100" placeholder="I'd love to go…">
+          <div class="form-row">
+            <div>
+              <label class="field-label" for="date-day">What day works for you?</label>
+              <input id="date-day" type="date">
+            </div>
+            <div>
+              <label class="field-label" for="date-time">A time that works?</label>
+              <input id="date-time" type="time">
+            </div>
+          </div>
+          <label class="field-label" for="extra-note">Anything else I should know? <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+          <textarea id="extra-note" maxlength="240" placeholder="A place you love, a food you’re craving, or anything that makes you comfortable…"></textarea>
+          <div class="submit-row"><button class="btn btn-primary" id="plan-button" type="button">Send my date wishes ♡</button></div>
+          <div class="result" id="result" role="status" aria-live="polite">
+            <strong>Your date wish is ready! 💌</strong>
+            <p id="result-text"></p>
+            <button class="copy-btn" id="copy-button" type="button">Copy date details</button>
+          </div>
+        </section>
+        <footer class="footer">Made with a little courage and a lot of heart ♡</footer>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    const yesButton = document.getElementById('yes-button');
+    const noButton = document.getElementById('no-button');
+    const planner = document.getElementById('planner');
+    const noNote = document.getElementById('no-note');
+    const ideas = [...document.querySelectorAll('.idea')];
+    const result = document.getElementById('result');
+    const resultText = document.getElementById('result-text');
+    let latestDetails = '';
+
+    yesButton.addEventListener('click', () => {
+      planner.classList.add('show');
+      noNote.textContent = '';
+      yesButton.textContent = 'Yay! ♡';
+      yesButton.setAttribute('aria-pressed', 'true');
+      planner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      makeHearts();
+    });
+
+    const gentleReplies = [
+      'No worries at all — thanks for being honest. ♡',
+      'That’s okay! The invitation stays open whenever you feel like it. 🌷',
+      'All good — hope you have a lovely day either way. ✨'
+    ];
+    noButton.addEventListener('click', () => {
+      noNote.textContent = gentleReplies[Math.floor(Math.random() * gentleReplies.length)];
+      noButton.textContent = 'Thanks for understanding ♡';
+      noButton.disabled = true;
+      noButton.style.opacity = '.78';
+    });
+
+    ideas.forEach(button => button.addEventListener('click', () => {
+      const selected = button.getAttribute('aria-pressed') === 'true';
+      button.setAttribute('aria-pressed', String(!selected));
+    }));
+
+    document.getElementById('plan-button').addEventListener('click', () => {
+      const picked = ideas.filter(button => button.getAttribute('aria-pressed') === 'true').map(button => button.dataset.idea);
+      const custom = document.getElementById('custom-idea').value.trim();
+      if (custom) picked.push(custom);
+      const dayValue = document.getElementById('date-day').value;
+      const timeValue = document.getElementById('date-time').value;
+      const note = document.getElementById('extra-note').value.trim();
+      const date = dayValue ? new Date(dayValue + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) : '';
+      const time = timeValue ? new Date('2000-01-01T' + timeValue).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) : '';
+      const lines = [];
+      if (picked.length) lines.push('I’d love: ' + picked.join(', '));
+      if (date) lines.push('Day: ' + date);
+      if (time) lines.push('Time: ' + time);
+      if (note) lines.push('A little note: ' + note);
+      latestDetails = lines.length ? lines.join('\n') : 'I’m excited for our date — let’s pick the details together!';
+      resultText.textContent = latestDetails;
+      result.classList.add('show');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      makeHearts();
+    });
+
+    document.getElementById('copy-button').addEventListener('click', async event => {
+      const button = event.currentTarget;
+      try {
+        await navigator.clipboard.writeText(latestDetails);
+        button.textContent = 'Copied! ♡';
+      } catch {
+        const temporary = document.createElement('textarea');
+        temporary.value = latestDetails;
+        temporary.style.position = 'fixed';
+        temporary.style.opacity = '0';
+        document.body.appendChild(temporary);
+        temporary.select();
+        document.execCommand('copy');
+        temporary.remove();
+        button.textContent = 'Copied! ♡';
+      }
+      setTimeout(() => { button.textContent = 'Copy date details'; }, 1800);
+    });
+
+    function makeHearts() {
+      const layer = document.getElementById('hearts');
+      for (let i = 0; i < 14; i++) {
+        const heart = document.createElement('span');
+        heart.className = 'heart';
+        heart.textContent = ['♡', '♥', '✦'][Math.floor(Math.random() * 3)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.color = ['#d97d91', '#e5a5ae', '#e7b57e'][Math.floor(Math.random() * 3)];
+        heart.style.fontSize = (14 + Math.random() * 17) + 'px';
+        heart.style.animationDelay = Math.random() * .6 + 's';
+        layer.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+      }
+    }
+  </script>
+</body>
+</html>
