@@ -1,0 +1,8 @@
+{% extends 'invitations/base.html' %}
+{% block title %}Choose a day and time{% endblock %}
+{% block content %}
+<header class="hero"><div class="eyebrow">step 2 of 4</div><h1>When works<br><span>for you?</span></h1><p class="intro">These are just suggestions; we can figure it out together.</p></header><div class="divider">♥</div>
+<form method="post">{% csrf_token %}<div class="form-row"><div><label class="field-label" for="preferred-day">What day works for you?</label><input id="preferred-day" type="date" name="preferred_day" value="{{ plan.preferred_day|default:'' }}"></div>
+<div><label class="field-label" for="preferred-time">A time that works?</label><input id="preferred-time" type="time" name="preferred_time" value="{{ plan.preferred_time|default:'' }}"></div></div>
+<div class="nav-row"><a class="btn btn-soft" href="{% url 'ideas' %}">Back</a><button class="btn btn-primary">Next ♡</button></div></form>
+{% endblock %}
