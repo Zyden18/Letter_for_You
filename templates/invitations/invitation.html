@@ -1,0 +1,11 @@
+{% extends 'invitations/base.html' %}
+{% block content %}
+<header class="hero"><div class="eyebrow">✿ &nbsp; a tiny question for you</div><div class="hero-icon">💌</div>
+  <h1>Would you go on<br>a <span>date</span> with me?</h1>
+  <p class="intro">I’d really love to spend some time with you. Nothing fancy has to be planned — just a little time together. ♡</p>
+</header><div class="divider">♥</div>
+<form method="post" class="center">{% csrf_token %}<h2 class="question">So… what do you say?</h2>
+  <div class="answer-row"><button class="btn btn-primary" name="answer" value="yes">Yes, I’d love to! ♡</button>
+  <button class="btn btn-soft" name="answer" value="maybe_later">Maybe another time</button></div>
+</form>
+{% endblock %}

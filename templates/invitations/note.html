@@ -1,0 +1,7 @@
+{% extends 'invitations/base.html' %}
+{% block title %}Add a note{% endblock %}
+{% block content %}
+<header class="hero"><div class="eyebrow">step 3 of 4</div><h1>Anything else<br><span>I should know?</span></h1><p class="intro">A place you love, a food you’re craving, or anything that would make you comfortable.</p></header><div class="divider">♥</div>
+<form method="post">{% csrf_token %}<label class="field-label" for="note">Your note <span class="muted">(optional)</span></label><textarea id="note" name="note" maxlength="240" placeholder="Write anything you’d like…">{{ plan.note|default:'' }}</textarea>
+<div class="nav-row"><a class="btn btn-soft" href="{% url 'schedule' %}">Back</a><button class="btn btn-primary">Review ♡</button></div></form>
+{% endblock %}

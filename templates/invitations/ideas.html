@@ -1,0 +1,9 @@
+{% extends 'invitations/base.html' %}
+{% block title %}Pick your kind of date{% endblock %}
+{% block content %}
+<header class="hero"><div class="eyebrow">step 1 of 4</div><h1>Let’s make it<br><span>your kind of date</span> ✨</h1><p class="intro">Pick as many as you like, or add an idea of your own.</p></header><div class="divider">♥</div>
+<form method="post">{% csrf_token %}<fieldset><legend class="question">What sounds fun?</legend>{% if error %}<p role="alert" style="color:#9c3d58;font-size:14px;font-weight:600">{{ error }}</p>{% endif %}<div class="ideas">
+{% for idea in date_ideas %}<label class="idea"><input type="checkbox" name="ideas" value="{{ idea }}" {% if idea in plan.ideas %}checked{% endif %}><span aria-hidden="true" style="min-width:25px;font-size:22px;line-height:1">{% if forloop.counter == 1 %}☕{% elif forloop.counter == 2 %}🍝{% elif forloop.counter == 3 %}🍿{% elif forloop.counter == 4 %}🌷{% elif forloop.counter == 5 %}🍰{% elif forloop.counter == 6 %}🎁{% endif %}</span><span>{{ idea }}</span></label>{% endfor %}
+</div><label class="field-label" for="custom-idea">Or tell me your own idea</label><input id="custom-idea" name="custom_idea" maxlength="100" value="{{ plan.custom_idea|default:'' }}" placeholder="I’d love to…">
+<div class="nav-row"><a class="btn btn-soft" href="{% url 'invitation' %}">Back</a><button class="btn btn-primary">Next ♡</button></div></form>
+{% endblock %}

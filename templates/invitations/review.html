@@ -1,0 +1,9 @@
+{% extends 'invitations/base.html' %}
+{% block title %}Review your date wishes{% endblock %}
+{% block content %}
+<header class="hero"><div class="eyebrow">step 4 of 4</div><h1>Your date<br><span>wishes</span> 💌</h1><p class="intro">Take a look, then send whenever you’re ready.</p></header><div class="divider">♥</div>
+<div class="summary">
+<p><strong>Ideas:</strong> {% if plan.ideas %}{{ plan.ideas|join:', ' }}{% else %}No preference{% endif %}{% if plan.custom_idea %}; {{ plan.custom_idea }}{% endif %}</p>
+<p><strong>Day:</strong> {{ plan.preferred_day|default:'Flexible' }}</p><p><strong>Time:</strong> {{ plan.preferred_time|default:'Flexible' }}</p><p><strong>Note:</strong> {{ plan.note|default:'None' }}</p>
+</div><div class="nav-row"><a class="btn btn-soft" href="{% url 'note' %}">Back</a><form method="post">{% csrf_token %}<button class="btn btn-primary">Send my date wishes ♡</button></form></div>
+{% endblock %}
